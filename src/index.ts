@@ -5,7 +5,7 @@ import { HttpCat } from './httpcat';
 // Load the config from the .env file
 require('dotenv').config();
 
-const talk = console.log;
+const talk = console.log;``
 
 // Create a new client object
 const client = new Client();
@@ -41,7 +41,7 @@ client.on("message", async (message: Message) => {
         
     }
 
-    
+
     // /[vf][u@]?c?[kc]/g
     //https://regexr.com/
 });
