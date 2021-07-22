@@ -1,11 +1,11 @@
 import chalk from 'chalk';
 import { Client, Message, MessageEmbed } from 'discord.js';
-import { HttpCat } from './httpcat';
+import { HttpCat } from './lib/httpcat';
 
 // Load the config from the .env file
 require('dotenv').config();
 
-const talk = console.log;``
+const talk = console.log;
 
 // Create a new client object
 const client = new Client();
