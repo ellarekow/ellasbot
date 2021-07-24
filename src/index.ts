@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { Client, Message, MessageEmbed } from 'discord.js';
+import { Client, DiscordAPIError, Message, MessageEmbed } from 'discord.js';
 import { HttpCat } from './lib/httpcat';
 
 // Load the config from the .env file
@@ -26,21 +26,49 @@ const ran = <K>(list: K[]): K => {
 // When receiving message event
 client.on("message", async (message: Message) => {
     // Make sure we arent listening to another bot or ourselves
-    if(message.author.bot)
+    if (message.author.bot)
         return;
-    
+    if (message.member == null)
+        return;
+
     // Log the cleanContent
     talk(message.cleanContent);
-    
+
     //cat function
-    if(message.cleanContent.startsWith("+cat")){
+    if (message.cleanContent.startsWith("+cat")) {
         await message.delete();
         message.channel.send(
             "https://http.cat/" + ran(HttpCat)
         )
-        
     }
 
+    if (message.cleanContent.startsWith("+hi")) {
+        message.channel.send(
+            "hello!!"
+        )
+    }
+
+    // https://discordjs.guide/popular-topics/embeds.html#embed-preview
+    if (message.cleanContent.startsWith("+profile")) {
+        message.channel.send(
+            new MessageEmbed()
+                .setTitle("This is your profile " + message.member.displayName + "!")
+                .addField("Pothos", 0 + " 🌱", true)
+        );
+    };
+
+    if (message.channel.id == '856242566119030804') {
+        if (message.cleanContent.startsWith("+whois")) {
+            message.channel.send(
+                new MessageEmbed()
+                    .setTitle("This is your profile " + message.member.displayName + "!")
+                    .addField("Pothos", 0 + " 🌱", true)
+                    .addField("strikes", 0 + " ❌", true)
+            );
+        }
+    }
+
+    // https://discordjs.guide/
 
     // /[vf][u@]?c?[kc]/g
     //https://regexr.com/
