@@ -1,24 +1,43 @@
+import { Schema, model } from 'mongoose';
 import { Snowflake } from 'discord.js';
 
-// Defines a user object
-export type User = {
-
-    id: Snowflake;
+export type IMember = {
+    discord_id: Snowflake;
+    pot: number;
     strikes: number;
-    currency: number;
-
 };
 
-const findUser = (id: Snowflake): User => {
+const MemberSchema = new Schema<IMember>({
+    discord_id: String,
+    pot: Number,
+    strikes: Number
+});
 
-    // TODO: Connect to database / filesystem
+export const Member = model<IMember>("Member", MemberSchema);
 
-    return {
-        id: "1234",
-        strikes: 0,
-        currency: 0
-    };
-};
+
+
+// import { Snowflake } from 'discord.js';
+
+// // Defines a user object
+// export type User = {
+
+//     discord_id: Snowflake;
+//     strikes: number;
+//     currency: number;
+
+// };
+
+// const findUser = (id: Snowflake): User => {
+
+//     // TODO: Connect to database / filesystem
+
+//     return {
+//         id: "1234",
+//         strikes: 0,
+//         currency: 0
+//     };
+// };
 
 
 

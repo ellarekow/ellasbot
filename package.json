@@ -11,6 +11,8 @@
     "chalk": "^4.1.1",
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
+    "mongodb": "^4.0.1",
+    "mongoose": "^5.13.3",
     "ts-node": "^10.1.0",
     "typescript": "^4.3.5"
   },

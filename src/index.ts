@@ -1,6 +1,9 @@
 import chalk from 'chalk';
 import { Client, DiscordAPIError, Message, MessageEmbed } from 'discord.js';
 import { HttpCat } from './lib/httpcat';
+import { checkUser, connectToDB } from './lib/database';
+import { Member } from './types/user';
+import { userInfo } from 'os';
 
 // Load the config from the .env file
 require('dotenv').config();
@@ -15,13 +18,12 @@ client.on('ready', () => {
     console.log('Bot ready!');
 });
 
-// Execute the login procedure with the token provided
-client.login(process.env.DISCORD_TOKEN);
-
 // Function to grab a random item from the list
 const ran = <K>(list: K[]): K => {
     return list[Math.floor(Math.random() * list.length)];
 }
+
+const lastUserMessageData: { [key: string]: Date } = {};
 
 // When receiving message event
 client.on("message", async (message: Message) => {
@@ -31,12 +33,37 @@ client.on("message", async (message: Message) => {
     if (message.member == null)
         return;
 
+    // ==
+    let userInfo = await checkUser(message.author.id);
+
+    // If message does not start with our prefix
+    // (optional) check time constraint
+    // get user data
+    // add one to pot count
+    // save user data
+    if (!message.cleanContent.startsWith("+")) {
+        if (!lastUserMessageData[message.author.id] || ((new Date()).getTime() - lastUserMessageData[message.author.id].getTime() >= 15000)) {
+            userInfo.pot += 1;
+            await userInfo.save();
+            console.log('+1 for ' + message.author.username);
+            lastUserMessageData[message.author.id] = new Date();
+        }
+    }
+
     // Log the cleanContent
     talk(message.cleanContent);
 
+    if (message.cleanContent.startsWith("+help")) {
+        message.channel.send(
+            "```\n" +
+            "+help\t\t\tGet a list of commands this bot has\n" +
+            "+profile\t\t\tShows you your server profile\n" +
+            "```"
+        )
+    }
+
     //cat function
     if (message.cleanContent.startsWith("+cat")) {
-        await message.delete();
         message.channel.send(
             "https://http.cat/" + ran(HttpCat)
         )
@@ -53,7 +80,8 @@ client.on("message", async (message: Message) => {
         message.channel.send(
             new MessageEmbed()
                 .setTitle("This is your profile " + message.member.displayName + "!")
-                .addField("Pothos", 0 + " 🌱", true)
+                .setThumbnail(message.author.avatarURL() || '')
+                .addField("Pothos", userInfo.pot + " 🌱", true)
         );
     };
 
@@ -81,3 +109,8 @@ client.on("message", async (message: Message) => {
 // https://discord.com/developers/applications
 // https://discord.com/oauth2/authorize?client_id=865751851433590804&scope=bot&permissions=8
 
+// Execute the login procedure with the token provided
+(async () => {
+    await connectToDB();
+    client.login(process.env.DISCORD_TOKEN);
+})();
