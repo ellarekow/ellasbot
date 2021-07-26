@@ -4,6 +4,7 @@ import { HttpCat } from './lib/httpcat';
 import { checkUser, connectToDB } from './lib/database';
 import { Member } from './types/user';
 import { userInfo } from 'os';
+import { time } from 'console';
 
 // Load the config from the .env file
 require('dotenv').config();
@@ -16,7 +17,27 @@ const client = new Client();
 // Register a function to be excuted when the bot is 'ready'
 client.on('ready', () => {
     console.log('Bot ready!');
+    // setTimeout(function(){ // in leftToEight() milliseconds run this:
+    //     sendMessage(); // send the message once
+    //     var dayMillseconds = 1000 * 60 * 60 * 24;
+    //     setInterval(function(){ // repeat this every 24 hours
+    //         sendMessage();
+    //     }, dayMillseconds)
+    // }, eightam())
 });
+
+// function eightam(){
+//     var d = new Date();
+//     return (-d + d.setHours(8,0,0,0));
+// }
+
+// function sendMessage(){
+//     var guild = client.guilds.cache.get('868880194340008006');
+//     if(guild && guild.channels.cache.get('868880194340008010')){
+//         const channel = guild.channels.cache.get("868880194340008010");
+//         channel.message.send("Good Morning");
+//     }
+// }
 
 // Function to grab a random item from the list
 const ran = <K>(list: K[]): K => {
@@ -24,6 +45,9 @@ const ran = <K>(list: K[]): K => {
 }
 
 const lastUserMessageData: { [key: string]: Date } = {};
+
+
+
 
 // When receiving message event
 client.on("message", async (message: Message) => {
@@ -35,6 +59,7 @@ client.on("message", async (message: Message) => {
 
     // ==
     let userInfo = await checkUser(message.author.id);
+    let potz = " 🌱";
 
     // If message does not start with our prefix
     // (optional) check time constraint
@@ -81,21 +106,44 @@ client.on("message", async (message: Message) => {
             new MessageEmbed()
                 .setTitle("This is your profile " + message.member.displayName + "!")
                 .setThumbnail(message.author.avatarURL() || '')
-                .addField("Pothos", userInfo.pot + " 🌱", true)
+                .addField("Pothos", userInfo.pot + potz, true)
         );
     };
+
+    if(message.cleanContent.startsWith("+buy")){
+        message.channel.send(
+            "```\n" +
+            "+server emoji slot\t\t\t200" + potz + "\n" +
+            "+Minecraft server\t\t\tComing soon!\n" +
+            "+Colored name\t\t\tComing soon!\n" +
+            "+@ everyone ping\t\t\tComing soon!\n" +
+            "```"
+        )
+    }
 
     if (message.channel.id == '856242566119030804') {
         if (message.cleanContent.startsWith("+whois")) {
             message.channel.send(
                 new MessageEmbed()
                     .setTitle("This is your profile " + message.member.displayName + "!")
-                    .addField("Pothos", 0 + " 🌱", true)
+                    .addField("Pothos", 0 + potz, true)
                     .addField("strikes", 0 + " ❌", true)
             );
         }
-    }
 
+        // if (message.cleanContent.startsWith("+addPot @") ){
+        //     if (message.mentions.members.size !== 1) {
+        //         message.channel.send('Please mention exactly 1 user');
+        //         return;
+        //     }
+        //     if(message.mentions[0] == null)
+        //         return;
+        //     const user = message.mentions;
+        //     // console.l
+        //     console.log(user)
+        //     // let userInfo = await checkUser(message.author.id);
+        // }
+    }
     // https://discordjs.guide/
 
     // /[vf][u@]?c?[kc]/g
@@ -112,5 +160,6 @@ client.on("message", async (message: Message) => {
 // Execute the login procedure with the token provided
 (async () => {
     await connectToDB();
+    console.log(`Logging in with ${process.env.DISCORD_TOKEN}`)
     client.login(process.env.DISCORD_TOKEN);
 })();
