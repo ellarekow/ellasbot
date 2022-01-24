@@ -4,7 +4,7 @@ import { Member } from "../types/user";
 
 export const connectToDB = async () => {
     // @ts-ignore
-    const res = await mongoose.connect(
+    const response = await mongoose.connect(
         process.env.MONGO_URL,
         { useNewUrlParser: true, useUnifiedTopology: true },
         (error) => {
@@ -14,7 +14,7 @@ export const connectToDB = async () => {
         }
     );
 
-    console.log("res of mongoose connect:", res);
+    console.log("res of mongoose connect:", response);
 
     const database = mongoose.connection;
 
