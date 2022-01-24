@@ -1,3 +1,1 @@
-export type pothos = {
-    
-}
+export type pothos = {};

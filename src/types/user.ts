@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import { Snowflake } from 'discord.js';
+import { Snowflake } from "discord.js";
+import { model, Schema } from "mongoose";
 
 export type IMember = {
     discord_id: Snowflake;
@@ -10,12 +10,10 @@ export type IMember = {
 const MemberSchema = new Schema<IMember>({
     discord_id: String,
     pot: Number,
-    strikes: Number
+    strikes: Number,
 });
 
 export const Member = model<IMember>("Member", MemberSchema);
-
-
 
 // import { Snowflake } from 'discord.js';
 
@@ -38,8 +36,6 @@ export const Member = model<IMember>("Member", MemberSchema);
 //         currency: 0
 //     };
 // };
-
-
 
 // Example code
 // example: profile command

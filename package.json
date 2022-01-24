@@ -1,22 +1,31 @@
 {
-  "name": "ellasbot",
-  "version": "1.0.0",
-  "description": "Ellas super dope bot",
-  "main": "index.js",
-  "author": "Ella Rekow",
-  "license": "MIT",
-  "dependencies": {
-    "@types/chalk": "^2.2.0",
-    "@types/node": "^16.3.3",
-    "chalk": "^4.1.1",
-    "discord.js": "^12.5.3",
-    "dotenv": "^10.0.0",
-    "mongodb": "^4.0.1",
-    "mongoose": "^5.13.3",
-    "ts-node": "^10.1.0",
-    "typescript": "^4.3.5"
-  },
-  "scripts": {
-    "start": "ts-node ./src/index.ts"
-  }
+    "name": "ellasbot",
+    "version": "1.0.0",
+    "description": "Ellas super dope bot",
+    "main": "src/index.ts",
+    "author": "Ella Rekow",
+    "license": "gpl-3",
+    "dependencies": {
+        "@lvksh/logger": "^1.5.2",
+        "chalk": "^4.1.1",
+        "discord.js": "^12.5.3",
+        "dotenv": "^10.0.0",
+        "mongodb": "^4.0.1",
+        "mongoose": "^5.13.3",
+        "sunflake": "^0.4.1"
+    },
+    "devDependencies": {
+        "@types/chalk": "^2.2.0",
+        "@types/node": "^16.3.3",
+        "@typescript-eslint/eslint-plugin": "^5.9.1",
+        "eslint": "^8.6.0",
+        "eslint-plugin-import": "^2.25.4",
+        "eslint-plugin-lvksh": "^1.2.3",
+        "ts-node": "^10.4.0",
+        "typescript": "^4.5.4"
+    },
+    "scripts": {
+        "start": "ts-node ./src/index.ts",
+        "lint": "eslint -c .eslintrc.json --ext .ts ./src"
+    }
 }
