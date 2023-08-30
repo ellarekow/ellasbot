@@ -10,7 +10,7 @@
         "chalk": "^4.1.1",
         "discord.js": "^12.5.3",
         "dotenv": "^10.0.0",
-        "mongodb": "^4.0.1",
+        "mongodb": "^4.17.0",
         "mongoose": "^5.13.3",
         "sunflake": "^0.4.1"
     },
